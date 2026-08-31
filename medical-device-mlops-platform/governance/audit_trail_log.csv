@@ -1,0 +1,7 @@
+event_id,date,event_type,pccp_change_type,description,triggered_by,reviewer,outcome
+EVT-001,2026-06-15,Initial deployment,N/A - initial submission,v1 XGBoost baseline model deployed to production,Scheduled release,Clinical Data Science Lead,Approved
+EVT-002,2026-06-29,Scheduled monitoring check,N/A - monitoring only,Weekly drift check — all features within threshold,Automated CI schedule,Automated (no escalation),No action required
+EVT-003,2026-07-13,Scheduled monitoring check,N/A - monitoring only,Weekly drift check — age feature KS-test flagged (p<0.05),Automated CI schedule,Clinical Data Science Lead,Escalated for review per PCCP
+EVT-004,2026-07-14,Manual review,In-scope performance-preserving retrain,Reviewed flagged drift — attributed to seasonal admission case-mix shift, within PCCP-approved retrain scope,Clinical Data Science Lead,Clinical Data Science Lead + DPO consulted on data handling,Retrain approved under existing PCCP — no new submission required
+EVT-005,2026-07-20,Model retrain,In-scope performance-preserving retrain,v1.1 retrained on updated data window per EVT-004 approval,Clinical Data Science Lead,Clinical Data Science Lead,Approved — AUC within acceptance band (0.71-0.72)
+EVT-006,2026-08-01,Scheduled monitoring check,N/A - monitoring only,Monthly performance check — AUC 0.715, within tolerance,Automated CI schedule,Automated (no escalation),No action required

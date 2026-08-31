@@ -1,0 +1,51 @@
+# Purview-style data classification catalogue — health data classification
+# tier, distinct from general PII, per GDPR Article 9 special category
+# requirements (see docs/regulatory_framework_mapping.md §3)
+
+dataset: readmission_risk_training_data
+classification_framework: "GDPR Art.9 Special Category + Internal PHI Tier"
+
+fields:
+  - name: patient_id
+    classification: "Direct Identifier — PHI"
+    access_tier: "Clinical Data Science only, row-level access logged"
+    retention: "Per organisational clinical data retention policy, not standard analytics retention"
+
+  - name: age
+    classification: "Quasi-identifier — PHI-adjacent"
+    access_tier: "Clinical Data Science, aggregated views only for broader analytics"
+    note: "Age banding (5-year buckets) applied for any output outside the clinical data science team, to reduce re-identification risk"
+
+  - name: prior_admissions_12mo
+    classification: "Special Category Health Data — GDPR Art.9"
+    access_tier: "Clinical Data Science only"
+
+  - name: length_of_stay_days
+    classification: "Special Category Health Data — GDPR Art.9"
+    access_tier: "Clinical Data Science only"
+
+  - name: comorbidity_count
+    classification: "Special Category Health Data — GDPR Art.9"
+    access_tier: "Clinical Data Science only"
+
+  - name: discharge_disposition
+    classification: "Special Category Health Data — GDPR Art.9"
+    access_tier: "Clinical Data Science only"
+
+  - name: admission_type
+    classification: "Special Category Health Data — GDPR Art.9"
+    access_tier: "Clinical Data Science only"
+
+  - name: readmitted_30d
+    classification: "Special Category Health Data — GDPR Art.9 (derived outcome)"
+    access_tier: "Clinical Data Science only"
+
+lawful_basis: "Substantial public interest (healthcare provision/management) per GDPR Art. 9(2)(h) — confirmed with the organisation's Data Protection Officer, not assumed by the data team"
+
+comparison_to_standard_purview_setup: >
+  A general-purpose Purview catalogue tags PII (name, email, financial account
+  numbers) with a single "Confidential" tier and standard RBAC. This catalogue
+  adds a distinct, higher tier for health data specifically, because GDPR
+  Article 9 imposes a materially stricter lawful-basis requirement than
+  standard personal data — treating health fields the same as general PII
+  would under-govern them.

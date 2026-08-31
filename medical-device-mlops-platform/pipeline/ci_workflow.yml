@@ -1,0 +1,47 @@
+# GitHub Actions CI — mirrors production pattern (GitHub Actions, dbt-style
+# test gating), extended with a regulatory-metadata check step specific to
+# a SaMD pipeline: a run that doesn't tag SaMD/EU AI Act/PCCP metadata
+# fails CI, not just a normal lint/test failure.
+name: ml-pipeline-ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r pipeline/requirements.txt pytest
+
+      - name: Run unit tests
+        run: pytest tests/ -v
+
+      - name: Train model (smoke test)
+        run: python pipeline/train_model.py
+
+      - name: Validate regulatory metadata tags present
+        run: |
+          python -c "
+          import mlflow
+          client = mlflow.tracking.MlflowClient()
+          runs = client.search_runs(experiment_ids=['0'], max_results=1)
+          required_tags = ['samd_classification', 'eu_ai_act_risk_tier', 'pccp_change_type']
+          for run in runs:
+              missing = [t for t in required_tags if t not in run.data.tags]
+              assert not missing, f'Missing required regulatory tags: {missing}'
+          print('Regulatory metadata check: PASS')
+          "
+
+      - name: Run drift monitoring check
+        run: python pipeline/drift_monitoring.py
