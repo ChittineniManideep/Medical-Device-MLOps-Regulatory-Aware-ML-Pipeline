@@ -1,11 +1,6 @@
 # Medical Device MLOps — Regulatory-Aware ML Pipeline
 ### A clinical decision-support model, deployed with the MLOps stack already in production use, wrapped in the regulatory layer specific to Software as a Medical Device (SaMD)
 
-## Why this project exists
-
-The underlying platform engineering skills for this kind of role were already a near-complete match — this project adds the one thing genuinely specific to the domain: understanding how EU MDR, FDA's SaMD framework, the EU AI Act's high-risk classification, and GDPR Article 9 (special category health data) actually change how an MLOps pipeline is built and documented, versus a standard ML deployment.
-
-**Honest framing:** this closes a "nice to have" domain flavour gap, not a structural one — the JD itself treats the platform engineering as domain-agnostic. This project demonstrates that the regulatory layer is understood, not that healthcare experience has been manufactured from nothing.
 
 ## The simulated use case
 
